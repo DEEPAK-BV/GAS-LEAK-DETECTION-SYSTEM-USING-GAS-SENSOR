@@ -1,3 +1,6 @@
+# Name :Deepak B V
+# Reg no :212223060036
+# Slot :4X4-5
 # GAS-LEAK-DETECTION-SYSTEM-USING-GAS-SENSOR
 
 ## Aim:
@@ -10,18 +13,15 @@
   Gas sensor (MQ-2)
 	
 ## Circuit Diagram:
-
- 
-
-
-
+<img width="1211" height="678" alt="image" src="https://github.com/user-attachments/assets/af73947c-6dd0-4683-b5f2-9b2b7cc069b8" />
 
 ## Theory :
  The Arduino Uno is powered by the ATmega328P, an 8-bit microcontroller that runs at 16 MHz. It has 32 KB of flash memory, 2 KB of SRAM, and 1 KB of EEPROM. The board 
 has 14 digital I/O pins (of which 6 can be used as PWM outputs) and 6 analog input pins. These pins allow the board to interface with various sensors, actuators, and other devices.
 The Arduino Uno can be powered via a USB connection or an external power supply. The board has a built-in voltage regulator to manage power from 7 to 12 volts.
 The board is programmable using the Arduino IDE (Integrated Development Environment), which supports a simplified version of C/C++. The code, known as a "sketch," is uploaded to the board via a USB connection. The Uno has a USB-B port, which is used for communication with a computer. The USB connection also powers the board when connected. The board includes a reset button that restarts the microcontroller, useful during programming and troubleshooting. The In-Circuit Serial Programming (ICSP) header allows for low-level programming of the microcontroller or firmware updates. The Uno has a built-in LED on pin 13, commonly used for simple tests and debugging.
-Procedure:
+
+## Procedure:
 Step 1: Set Up the Tinkercad Environment
 3.	Log in to Tinkercad: Open Tinkercad in your web browser and log in to your account.
 4.	Create a New Circuit: In the Tinkercad dashboard, click on "Circuits" and then select "Create New Circuit."
@@ -57,10 +57,54 @@ Step 7: Save Your Work
 •	Save the Circuit: Click "Save" to keep your circuit design and code for future use.
 
 ## Program:
+~~~
+#include <LiquidCrystal.h>
+// initialize the library with the numbers of the interface pins
+LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+
+void setup() {
+  Serial.begin(9600);
+  // set up the LCD's number of columns and rows:
+  lcd.begin(16, 2);
+  pinMode(13,OUTPUT);
+  pinMode(7,OUTPUT);
+  pinMode(6,OUTPUT);
+}
+
+void loop() {
+  int gas_data;
+  gas_data = analogRead(A0);
+  lcd.setCursor(00,00);
+  lcd.print("Gas :");
+  lcd.setCursor(6,00);
+  lcd.print(gas_data);
+  if(gas_data > 500){
+    digitalWrite(13,HIGH);
+    delay(100);
+    digitalWrite(13,LOW);
+    lcd.setCursor(00,1);
+    lcd.print("DANGER");
+  }else if(gas_data > 400){
+    digitalWrite(6,HIGH);
+    delay(100);
+    digitalWrite(6,LOW);
+    lcd.setCursor(00,1);
+    lcd.print("WARNING");
+  }else {
+    digitalWrite(7,HIGH);
+    lcd.setCursor(00,1);
+    lcd.print("SAFE");
+  }
+  Serial.println(gas_data);
+  delay(100);
+  lcd.clear();
+}
+~~~
 
 ## Output:
+<img width="731" height="450" alt="image" src="https://github.com/user-attachments/assets/4e51d2a1-8367-4572-b840-fd244c0dedee" />
 
-   
 
 ## Result:
+The gas leak detection system was successfully implemented using Arduino UNO and MQ-2 gas sensor in Tinkercad. The system effectively monitored gas concentration levels in real-time, displaying analog readings on a 16x2 LCD screen along with corresponding safety status indicators. When gas levels were below 400, the green LED illuminated with "SAFE" status; levels between 400-500 triggered the yellow LED with "WARNING" message; and levels above 500 activated the red LED with "DANGER" alert. The serial monitor provided continuous numerical data logging for analysis. The circuit demonstrated proper threshold-based decision making and visual feedback through LEDs and LCD, proving its effectiveness as a safety monitoring system for detecting hazardous gas leaks in real-world applications.
 
